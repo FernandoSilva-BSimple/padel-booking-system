@@ -6,5 +6,6 @@ public interface ICourtService
 {
     Task<Result<CourtDTO>> Create(CreateCourtDTO courtDTO);
     Task<ICourt> AddConsumedCourtAsync(Guid id, string name, decimal basePricePerHour, Guid clubId);
+    Task<ICourt> AddCourtAsync(ICourt court);
 
 }

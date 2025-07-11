@@ -1,10 +1,11 @@
+using Application.Interfaces;
 using Domain.Factory;
 using Domain.Interfaces;
 using Domain.IRepository;
 
 namespace Application.Services
 {
-    public class ClubService
+    public class ClubService : IClubService
     {
         private readonly IClubRepository _ClubRepository;
         private readonly IClubFactory _ClubFactory;

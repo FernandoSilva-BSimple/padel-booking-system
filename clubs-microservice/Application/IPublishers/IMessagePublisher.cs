@@ -4,5 +4,5 @@ namespace Application.IPublishers;
 
 public interface IMessagePublisher
 {
-    Task PublishCreatedClubMessageAsync(Guid id, string name, TimePeriod timePeriod);
+    Task PublishCreatedClubMessageAsync(Guid id, string name, TimePeriod timePeriod, Guid? correlationId);
 }

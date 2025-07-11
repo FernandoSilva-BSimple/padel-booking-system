@@ -8,5 +8,6 @@ public interface ICourtTempService
     Task CreateCourtTempAsync(CreateRequestedCourtCommand command);
     Task StartSagaAsync(CreateCourtAndClubDTO dto);
     Task DeleteCourtTempAsync(Guid id);
+    Task<ICourtTemp> GetByIdAsync(Guid id);
 
 }

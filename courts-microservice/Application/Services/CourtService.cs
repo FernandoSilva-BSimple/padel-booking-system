@@ -49,4 +49,12 @@ public class CourtService : ICourtService
         return court;
 
     }
+
+    public async Task<ICourt> AddCourtAsync(ICourt court)
+    {
+        var courtAdded = await _courtRepository.AddAsync(court);
+        await _courtRepository.SaveChangesAsync();
+
+        return courtAdded;
+    }
 }

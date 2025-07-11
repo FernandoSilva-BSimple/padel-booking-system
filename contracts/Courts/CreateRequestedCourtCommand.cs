@@ -1,3 +1,3 @@
 namespace Contracts.Courts;
 
-public record CreateRequestedCourtCommand(string Name, decimal BasePricePerHour, string ClubName, TimeOnly StartTime, TimeOnly EndTime);
+public record CreateRequestedCourtCommand(Guid CollabTempId, string Name, decimal BasePricePerHour, string ClubName, TimeOnly StartTime, TimeOnly EndTime);

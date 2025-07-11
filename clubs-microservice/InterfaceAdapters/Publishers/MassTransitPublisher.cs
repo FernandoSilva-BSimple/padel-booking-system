@@ -15,9 +15,9 @@ public class MassTransitPublisher : IMessagePublisher
 
     }
 
-    public async Task PublishCreatedClubMessageAsync(Guid id, string name, TimePeriod timePeriod)
+    public async Task PublishCreatedClubMessageAsync(Guid id, string name, TimePeriod timePeriod, Guid? correlationId)
     {
-        await _publishEndpoint.Publish(new ClubCreatedMessage(id, name, timePeriod.Start, timePeriod.End));
+        await _publishEndpoint.Publish(new ClubCreatedMessage(id, name, timePeriod.Start, timePeriod.End, correlationId));
     }
 
 }

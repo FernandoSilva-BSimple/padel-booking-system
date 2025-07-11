@@ -9,6 +9,7 @@ using InterfaceAdapters.Publishers;
 using MassTransit;
 using Application.IPublishers;
 using Domain.Models;
+using InterfaceAdapters.Consumers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -59,6 +60,11 @@ builder.Services.AddMassTransit(x =>
 {
     e.ConfigureConsumer<ClubCreatedConsumer>(context);
 });
+
+        cfg.ReceiveEndpoint("clubs-cmd-saga", e =>
+        {
+            e.ConfigureConsumer<CourtWithoutClubCreatedConsumer>(context);
+        });
 
     });
 });

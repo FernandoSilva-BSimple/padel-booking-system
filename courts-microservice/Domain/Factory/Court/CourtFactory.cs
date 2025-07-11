@@ -16,6 +16,11 @@ public class CourtFactory : ICourtFactory
         _clubRepository = clubRepository;
     }
 
+    public Court ConvertFromTemp(ICourtTemp courtTemp, Guid clubId)
+    {
+        return new Court(courtTemp.Name, courtTemp.BasePricePerHour, clubId);
+    }
+
     public async Task<Court> Create(string name, decimal basePricePerHour, Guid clubId)
     {
         var clubExists = await _clubRepository.Exists(clubId);

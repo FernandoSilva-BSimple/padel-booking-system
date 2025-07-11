@@ -31,6 +31,7 @@ public class CollaboratorController : ControllerBase
     public async Task<IActionResult> CreateCourtWithClub(
     [FromBody] CreateCourtAndClubDTO dto)
     {
+
         await _courtTempService.StartSagaAsync(dto);
         return Accepted();
     }

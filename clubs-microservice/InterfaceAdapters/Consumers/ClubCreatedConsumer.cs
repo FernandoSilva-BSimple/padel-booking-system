@@ -13,6 +13,6 @@ public class ClubCreatedConsumer : IConsumer<ClubCreatedMessage>
     public async Task Consume(ConsumeContext<ClubCreatedMessage> context)
     {
         var msg = context.Message;
-        await _ClubService.AddConsumed(msg.Id, msg.Name, msg.startTime, msg.endTime);
+        await _ClubService.AddConsumed(msg.Id, msg.Name, msg.StartTime, msg.EndTime);
     }
 }

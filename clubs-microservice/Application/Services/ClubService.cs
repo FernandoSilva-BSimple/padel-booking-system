@@ -28,7 +28,7 @@ public class ClubService : IClubService
         await _ClubRepository.AddAsync(Club);
         await _ClubRepository.SaveChangesAsync();
 
-        await _publisher.PublishCreatedClubMessageAsync(Club.Id, Club.Name, Club.TimePeriod);
+        await _publisher.PublishCreatedClubMessageAsync(Club.Id, Club.Name, Club.TimePeriod, null);
 
         return _mapper.Map<Club, CreateClubDTO>(Club);
     }
@@ -60,6 +60,17 @@ public class ClubService : IClubService
 
         await _ClubRepository.AddAsync(Club);
         await _ClubRepository.SaveChangesAsync();
+    }
+
+    public async Task<ClubDTO> AddClubFromSagaAsync(CreateClubDTO clubDTO, Guid collabTempId)
+    {
+        var club = _ClubFactory.Create(clubDTO.Name, clubDTO.TimePeriod);
+        await _ClubRepository.AddAsync(club);
+        await _ClubRepository.SaveChangesAsync();
+
+        await _publisher.PublishCreatedClubMessageAsync(club.Id, club.Name, club.TimePeriod, collabTempId);
+
+        return _mapper.Map<Club, ClubDTO>(club);
     }
 
 }

@@ -7,5 +7,6 @@ public interface IClubService
     Task<bool> Exists(Guid Id);
     Task<IEnumerable<IClub>> GetAll();
     Task<IClub?> GetById(Guid Id);
+    Task<ClubDTO> AddClubFromSagaAsync(CreateClubDTO clubDTO, Guid collabTempId);
 
 }
