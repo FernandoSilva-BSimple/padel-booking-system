@@ -7,6 +7,7 @@ using Infrastructure.Resolvers;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using InterfaceAdapters.Publishers;
+using MassTransit;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,32 +42,27 @@ builder.Services.AddAutoMapper(cfg =>
 
 // MassTransit
 
-/*builder.Services.AddMassTransit(x =>
+builder.Services.AddMassTransit(x =>
 {
     x.AddConsumer<UserCreatedConsumer>();
-    x.AddConsumer<CollaboratorWithoutUserCreatedConsumer>();
 
     x.UsingRabbitMq((context, cfg) =>
     {
-        cfg.Host("localhost", "/", h =>
+        cfg.Host("localhost", 5673, "/", h =>
         {
             h.Username("guest");
             h.Password("guest");
         });
 
-        cfg.ReceiveEndpoint($"users-cmd-{instanceId}", e =>
+        cfg.ReceiveEndpoint("users-cmd", e =>
 {
     e.ConfigureConsumer<UserCreatedConsumer>(context);
 });
 
-        cfg.ReceiveEndpoint("users-cmd-saga", e =>
-                {
-                    e.ConfigureConsumer<CollaboratorWithoutUserCreatedConsumer>(context);
-                });
     });
 });
 
-*/
+
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();

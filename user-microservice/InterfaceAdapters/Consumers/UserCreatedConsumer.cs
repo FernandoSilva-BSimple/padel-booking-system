@@ -1,7 +1,7 @@
 using Contracts.Users;
 using MassTransit;
 
-public class UserCreatedConsumer
+public class UserCreatedConsumer : IConsumer<UserCreatedMessage>
 {
     private readonly IUserService _userService;
 
