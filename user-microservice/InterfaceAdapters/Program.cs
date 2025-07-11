@@ -1,8 +1,80 @@
+using Application.DTO;
+using Application.Services;
+using Domain.Factory.UserFactory;
+using Domain.IRepository;
+using Infrastructure;
+using Infrastructure.Resolvers;
+using Microsoft.EntityFrameworkCore;
+using AutoMapper;
+using InterfaceAdapters.Publishers;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+builder.Services.AddControllers();
+
+builder.Services.AddDbContext<PadelBookingContext>(opt =>
+    opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
+    );
+
+//Services
+builder.Services.AddTransient<IUserService, UserService>();
+builder.Services.AddScoped<IMessagePublisher, MassTransitPublisher>();
+
+//Repositories
+builder.Services.AddTransient<IUserRepository, UserRepository>();
+
+//Factories
+builder.Services.AddTransient<IUserFactory, UserFactory>();
+
+//Mappers
+builder.Services.AddTransient<UserDataModelConverter>();
+builder.Services.AddAutoMapper(cfg =>
+{
+    //DataModels
+    cfg.AddProfile<DataModelMappingProfile>();
+
+    //DTO
+    cfg.CreateMap<User, UserDTO>();
+});
+
+// MassTransit
+
+/*builder.Services.AddMassTransit(x =>
+{
+    x.AddConsumer<UserCreatedConsumer>();
+    x.AddConsumer<CollaboratorWithoutUserCreatedConsumer>();
+
+    x.UsingRabbitMq((context, cfg) =>
+    {
+        cfg.Host("localhost", "/", h =>
+        {
+            h.Username("guest");
+            h.Password("guest");
+        });
+
+        cfg.ReceiveEndpoint($"users-cmd-{instanceId}", e =>
+{
+    e.ConfigureConsumer<UserCreatedConsumer>(context);
+});
+
+        cfg.ReceiveEndpoint("users-cmd-saga", e =>
+                {
+                    e.ConfigureConsumer<CollaboratorWithoutUserCreatedConsumer>(context);
+                });
+    });
+});
+
+*/
+
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+builder.Services.AddSwaggerGen();
+
+// read env variables for connection string
+builder.Configuration.AddEnvironmentVariables();
 
 var app = builder.Build();
 
@@ -10,32 +82,29 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
+
+
+app.UseCors(builder => builder
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .SetIsOriginAllowed((host) => true)
+                .AllowCredentials());
 
 app.UseHttpsRedirection();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+app.UseAuthorization();
 
-app.MapGet("/weatherforecast", () =>
+app.MapControllers();
+
+using (var scope = app.Services.CreateScope())
 {
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast");
+    var dbContext = scope.ServiceProvider.GetRequiredService<PadelBookingContext>();
+    dbContext.Database.Migrate();
+}
 
 app.Run();
 
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
+public partial class Program { }
