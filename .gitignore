@@ -1,0 +1,69 @@
+## Build artifacts
+bin/
+obj/
+out/
+
+## User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+## OS files
+.DS_Store
+Thumbs.db
+
+## Rider
+.idea/
+
+## VS Code
+.vscode/
+
+## Logs
+*.log
+logs/
+
+## Temp files
+*.tmp
+*.bak
+*.swp
+
+## ASP.NET Secrets
+secrets.json
+
+## Entity Framework Migrations cache
+Migrations/obj/
+
+## Test results
+TestResults/
+*.trx
+
+## NCrunch
+.ncrunchproject
+.ncrunchsolution
+*.ncrunch*
+
+## JetBrains Rider
+*.sln.iml
+
+## Local db
+*.mdf
+*.ldf
+
+## Paket
+.paket/
+paket-files/
+
+## DotCover
+*.dcvr
+
+## Coverage reports
+coverage/
+coverage.info
+lcov-report/
+*.coverage
+*.coveragexml
+
+## npm artifacts (if Angular frontend is added later)
+node_modules/
+dist/
