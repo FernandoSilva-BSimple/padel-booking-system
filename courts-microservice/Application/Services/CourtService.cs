@@ -42,13 +42,17 @@ public class CourtService : ICourtService
 
     public async Task<ICourt> AddConsumedCourtAsync(Guid id, string name, decimal basePricePerHour, Guid clubId)
     {
+        var existing = await _courtRepository.GetByIdAsync(id);
+        if (existing is not null)
+            return existing;
+
         var consumedCourt = await _courtFactory.Create(id, name, basePricePerHour, clubId);
         var court = await _courtRepository.AddAsync(consumedCourt);
         await _courtRepository.SaveChangesAsync();
 
         return court;
-
     }
+
 
     public async Task<ICourt> AddCourtAsync(ICourt court)
     {

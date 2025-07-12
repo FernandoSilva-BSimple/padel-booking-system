@@ -28,6 +28,9 @@ public class BookingService : IBookingService
 
     public async Task<Result<BookingDTO>> AddBookingAsync(CreateBookingDTO createBookingDTO)
     {
+        //criar booking (já com courtId validado)
+        var booking = await _bookingFactory.Create(createBookingDTO.Price, createBookingDTO.CourtId, createBookingDTO.BookingPeriod);
+
         //validar se a reserva está dentro das horas do clube
         var court = await _courtRepository.GetByIdAsync(createBookingDTO.CourtId);
         var club = await _clubRepository.GetByIdAsync(court!.ClubId);
@@ -39,9 +42,6 @@ public class BookingService : IBookingService
         var isOccupied = await _bookingRepository.HasAnActiveBooking(createBookingDTO.CourtId, createBookingDTO.BookingPeriod._initDate, createBookingDTO.BookingPeriod._finalDate);
 
         if (isOccupied) return Result<BookingDTO>.Failure(Error.BadRequest("Court is already booked for the selected period"));
-
-        //criar booking (já com courtId validado)
-        var booking = await _bookingFactory.Create(createBookingDTO.Price, createBookingDTO.CourtId, createBookingDTO.BookingPeriod);
 
         var created = await _bookingRepository.AddAsync(booking);
 

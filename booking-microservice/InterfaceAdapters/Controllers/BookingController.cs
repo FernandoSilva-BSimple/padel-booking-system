@@ -17,11 +17,9 @@ public class BookingController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<BookingDTO>> Create([FromBody] CreateBookingDTO BookingDTO)
+    public async Task<ActionResult<BookingDTO>> Create([FromBody] CreateBookingDTO bookingDTO)
     {
-        var createBookingDTO = new CreateBookingDTO(BookingDTO.Price, BookingDTO.CourtId, BookingDTO.BookingPeriod);
-
-        var bookingCreated = await _BookingService.AddBookingAsync(createBookingDTO);
+        var bookingCreated = await _BookingService.AddBookingAsync(bookingDTO);
 
         return bookingCreated.ToActionResult();
     }
