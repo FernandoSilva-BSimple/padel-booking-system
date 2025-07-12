@@ -20,4 +20,11 @@ public class UserController : ControllerBase
             return Ok(userDTOResult);
         }
     }
+
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<UserDTO>>> GetUsers()
+    {
+        var users = await _userService.GetAllAsync();
+        return users.ToActionResult();
+    }
 }

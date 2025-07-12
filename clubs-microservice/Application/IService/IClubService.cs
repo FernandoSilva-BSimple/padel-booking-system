@@ -1,3 +1,4 @@
+using Application;
 using Application.DTO;
 using Domain.Models;
 public interface IClubService
@@ -8,5 +9,6 @@ public interface IClubService
     Task<IEnumerable<IClub>> GetAll();
     Task<IClub?> GetById(Guid Id);
     Task<ClubDTO> AddClubFromSagaAsync(CreateClubDTO clubDTO, Guid collabTempId);
+    Task<Result<IEnumerable<ClubDTO>>> GetAllAsync();
 
 }

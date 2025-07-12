@@ -1,3 +1,4 @@
+using Application;
 using Application.DTO;
 
 public interface IUserService
@@ -7,5 +8,5 @@ public interface IUserService
     Task<IUser?> GetById(Guid Id);
     Task<bool> Exists(Guid Id);
     Task AddConsumed(Guid id, string name, string email);
-
+    Task<Result<IEnumerable<UserDTO>>> GetAllAsync();
 }

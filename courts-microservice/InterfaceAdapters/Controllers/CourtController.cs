@@ -34,4 +34,7 @@ public class CourtController : ControllerBase
         await _courtTempService.StartSagaAsync(dto);
         return Accepted();
     }
+
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<CourtDTO>>> GetAllAsync() => (await _courtService.GetAllAsync()).ToActionResult();
 }

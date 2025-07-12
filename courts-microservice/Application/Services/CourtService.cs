@@ -4,6 +4,7 @@ using Domain.Factory;
 using Domain.Models;
 using Application.IPublishers;
 using Application.DTO;
+using AutoMapper;
 namespace Application.Services;
 
 public class CourtService : ICourtService
@@ -11,12 +12,14 @@ public class CourtService : ICourtService
     private ICourtRepository _courtRepository;
     private ICourtFactory _courtFactory;
     private readonly IMessagePublisher _publisher;
+    private readonly IMapper _mapper;
 
-    public CourtService(ICourtRepository courtRepository, ICourtFactory courtFactory, IMessagePublisher messagePublisher)
+    public CourtService(ICourtRepository courtRepository, ICourtFactory courtFactory, IMessagePublisher messagePublisher, IMapper mapper)
     {
         _courtRepository = courtRepository;
         _courtFactory = courtFactory;
         _publisher = messagePublisher;
+        _mapper = mapper;
     }
 
 
@@ -60,5 +63,12 @@ public class CourtService : ICourtService
         await _courtRepository.SaveChangesAsync();
 
         return courtAdded;
+    }
+
+    public async Task<Result<IEnumerable<CourtDTO>>> GetAllAsync()
+    {
+        var courts = await _courtRepository.GetAllAsync();
+        var courtsDto = _mapper.Map<IEnumerable<CourtDTO>>(courts);
+        return Result<IEnumerable<CourtDTO>>.Success(courtsDto);
     }
 }

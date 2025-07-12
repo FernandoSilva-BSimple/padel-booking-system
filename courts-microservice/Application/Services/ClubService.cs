@@ -1,4 +1,6 @@
+using Application.DTO;
 using Application.Interfaces;
+using AutoMapper;
 using Domain.Factory;
 using Domain.Interfaces;
 using Domain.IRepository;

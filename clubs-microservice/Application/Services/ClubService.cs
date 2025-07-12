@@ -73,4 +73,11 @@ public class ClubService : IClubService
         return _mapper.Map<Club, ClubDTO>(club);
     }
 
+    public async Task<Result<IEnumerable<ClubDTO>>> GetAllAsync()
+    {
+        var clubs = await _ClubRepository.GetAllAsync();
+        var clubsDto = _mapper.Map<IEnumerable<ClubDTO>>(clubs);
+        return Result<IEnumerable<ClubDTO>>.Success(clubsDto);
+    }
+
 }

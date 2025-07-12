@@ -64,6 +64,12 @@ public class BookingService : IBookingService
         return booking;
 
     }
+    public async Task<Result<IEnumerable<BookingDTO>>> GetAllAsync()
+    {
+        var bookings = await _bookingRepository.GetAllAsync();
+        var bookingsDto = _mapper.Map<IEnumerable<BookingDTO>>(bookings);
+        return Result<IEnumerable<BookingDTO>>.Success(bookingsDto);
+    }
 
     public bool IsWithinClubOpeningHours(PeriodDateTime period, TimePeriod clubHours)
     {

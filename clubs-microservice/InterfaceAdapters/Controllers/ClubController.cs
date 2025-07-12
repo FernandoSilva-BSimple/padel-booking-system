@@ -23,4 +23,12 @@ public class ClubController : ControllerBase
             return Ok(ClubDTOResult);
         }
     }
+
+    // Get: api/Clubs
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<ClubDTO>>> GetClubs()
+    {
+        var clubs = await _ClubService.GetAllAsync();
+        return clubs.ToActionResult();
+    }
 }

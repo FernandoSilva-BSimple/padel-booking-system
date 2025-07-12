@@ -23,4 +23,11 @@ public class BookingController : ControllerBase
 
         return bookingCreated.ToActionResult();
     }
+
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<BookingDTO>>> GetAll()
+    {
+        var bookings = await _BookingService.GetAllAsync();
+        return bookings.ToActionResult();
+    }
 }
