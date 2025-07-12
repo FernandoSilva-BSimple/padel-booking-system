@@ -1,17 +1,16 @@
 using Application.DTO;
-using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers;
 
 [Route("api/courts")]
 [ApiController]
-public class CollaboratorController : ControllerBase
+public class CourtController : ControllerBase
 {
     private readonly ICourtService _courtService;
     private readonly ICourtTempService _courtTempService;
 
-    public CollaboratorController(ICourtService courtService, ICourtTempService courtTempService)
+    public CourtController(ICourtService courtService, ICourtTempService courtTempService)
     {
         _courtService = courtService;
         _courtTempService = courtTempService;
