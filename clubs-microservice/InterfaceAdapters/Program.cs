@@ -40,6 +40,7 @@ builder.Services.AddAutoMapper(cfg =>
 
     //DTO
     cfg.CreateMap<Club, CreateClubDTO>();
+    cfg.CreateMap<Club, ClubDTO>();
 });
 
 // MassTransit
@@ -47,6 +48,7 @@ builder.Services.AddAutoMapper(cfg =>
 builder.Services.AddMassTransit(x =>
 {
     x.AddConsumer<ClubCreatedConsumer>();
+    x.AddConsumer<CourtWithoutClubCreatedConsumer>();
 
     x.UsingRabbitMq((context, cfg) =>
     {

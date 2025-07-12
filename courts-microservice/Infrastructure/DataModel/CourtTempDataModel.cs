@@ -19,4 +19,6 @@ public class CourtTempDataModel : ICourtTempVisitor
         ClubName = clubName;
         TimePeriod = timePeriod;
     }
+
+    public CourtTempDataModel() { }
 }

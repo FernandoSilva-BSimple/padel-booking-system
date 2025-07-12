@@ -11,6 +11,7 @@ using Infrastructure;
 using Infrastructure.Repositories;
 using Infrastructure.Resolvers;
 using InterfaceAdapters.Consumers;
+using InterfaceAdapters.Sagas;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using WebApi.Publishers;
@@ -29,7 +30,8 @@ builder.Services.AddDbContext<PadelBookingContext>(opt =>
 builder.Services.AddTransient<ICourtService, CourtService>();
 builder.Services.AddTransient<ICourtTempService, CourtTempService>();
 builder.Services.AddTransient<IClubService, ClubService>();
-builder.Services.AddScoped<IMessagePublisher, MassTransitPublisher>();
+
+builder.Services.AddTransient<IMessagePublisher, MassTransitPublisher>();
 
 //Repositories
 builder.Services.AddTransient<ICourtRepository, CourtRepository>();
@@ -61,6 +63,9 @@ builder.Services.AddMassTransit(x =>
 {
     x.AddConsumer<CourtCreatedConsumer>();
     x.AddConsumer<ClubCreatedConsumer>();
+
+    x.AddSagaStateMachine<CourtSaga, CourtSagaState>()
+        .InMemoryRepository();
 
     x.UsingRabbitMq((context, cfg) =>
     {
