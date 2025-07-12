@@ -17,7 +17,11 @@ public class CourtSaga : MassTransitStateMachine<CourtSagaState>
         InstanceState(x => x.CurrentState);
 
         Event(() => CreateCourtRequested, x => x.CorrelateById(context => context.Message.CollabTempId));
-        Event(() => ClubCreated, x => x.CorrelateById(context => context.Message.CorrelationId!.Value));
+        Event(() => ClubCreated, x =>
+        {
+            x.CorrelateById(ctx => ctx.Message.CorrelationId ?? Guid.Empty);
+            x.OnMissingInstance(m => m.Discard());
+        });
 
         Initially(
             When(CreateCourtRequested)
